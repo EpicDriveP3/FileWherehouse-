@@ -9,7 +9,7 @@
 
 servidor::servidor(int port) {
     _portno= port;
-    //_listOfSocket=new Lista<int>();
+    _listOfSocket=new Lista<int>();
     if(pthread_create(&_AceptThread, NULL, servidor::startMainThread,this)!=CERO)
         error(ERROR6);
 }

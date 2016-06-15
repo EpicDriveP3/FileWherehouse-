@@ -27,6 +27,5 @@ struct NodoBTree{
     int _NOfDatas;
 };
 
-
 #endif	/* STRUCTS_H */
 

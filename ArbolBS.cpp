@@ -189,7 +189,7 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
         free(pNodo->_datas);
         free(pNodo->_Sons);
         pNodo->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
-        pNodo->_Sons=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
+        pNodo->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
         for(int i=0; i<_keys+UNO; i++){
             pNodo->_Sons[i]=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
             pNodo->_Sons[i]->_father=pNodo;
@@ -219,14 +219,14 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
         HijoDer->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         HijoDer->_Sons=NULL;
         HijoDer->_father=padre;
-        insertHelper(padre,padre->_father,pNodo->_NOfDatas[middle]);
+        insertHelper(padre,padre->_father,pNodo->_datas[middle]);
         for(int i=0; i<middle; i++)
             insertHelper(HijoIzq,NULL,pNodo->_datas[i]);
         for(int i =middle+UNO; i <_keys+UNO; i++) 
             insertHelper(HijoDer,NULL,pNodo->_datas[i]);
         int i=0;
         for(; i<_root->_NOfDatas; i++){
-            if(memcmp(&pNodo->_NOfDatas[middle], &padre->_datas[i],sizeof(Dp))==CERO){
+            if(memcmp(&pNodo->_datas[middle], &padre->_datas[i],sizeof(Dp))==CERO){
                 break;
             }
         }
@@ -249,13 +249,13 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
     NodoBTree<Dp>* padre=pNodo->_father;
     NodoBTree<Dp>* HijoIzq= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
     HijoIzq->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
-    HijoIzq->_Sons=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
+    HijoIzq->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
     HijoIzq->_father=padre;
     NodoBTree<Dp>* HijoDer= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
     HijoDer->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
-    HijoDer->_Sons=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
+    HijoDer->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
     HijoDer->_father=padre;
-    insertHelper(padre,padre->_father,pNodo->_NOfDatas[middle]);
+    insertHelper(padre,padre->_father,pNodo->_datas[middle]);
     for(int i=0; i<middle; i++)
         insertHelper(HijoIzq,NULL,pNodo->_datas[i]);
     for(int i=0; i<middle; i++){
@@ -270,7 +270,7 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
     }
     int i=0;
     for(; i<_root->_NOfDatas; i++){
-        if(memcmp(&pNodo->_NOfDatas[middle], &padre->_datas[i],sizeof(Dp))==CERO){
+        if(memcmp(&pNodo->_datas[middle], &padre->_datas[i],sizeof(Dp))==CERO){
             break;
         }
     }
@@ -365,3 +365,10 @@ bool ArbolBS<Dp>::findHelper(NodoBTree<Dp>* pNodo, Dp pDato) {
     }
     return findHelper(pNodo->_Sons[i],pDato);
 }
+
+///instanceacion explicita
+template class ArbolBS<int>;
+template class ArbolBS<float>;
+template class ArbolBS<double>;
+template class ArbolBS<string>;
+template class ArbolBS<char*>;

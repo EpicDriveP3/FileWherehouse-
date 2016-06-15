@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Nodo.o \
 	${OBJECTDIR}/NodoB.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/msgHandler.o \
 	${OBJECTDIR}/servidor.o
 
 
@@ -109,6 +110,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/msgHandler.o: msgHandler.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/msgHandler.o msgHandler.cpp
 
 ${OBJECTDIR}/servidor.o: servidor.cpp 
 	${MKDIR} -p ${OBJECTDIR}

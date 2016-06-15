@@ -11,12 +11,14 @@
 #include "structs.h"
 #include <iostream>
 #include <string.h>
-
+#include <string>
 /**
  * cuando se invoca en el campo este algoritmo proboca que genere un 
  * arbolB con diez mil puntos de vida.
  */
-template <class Dp>
+using namespace std;
+
+template <typename Dp>
 class ArbolBS: public Constantes {
 public:
     ArbolBS(int pKeys);
