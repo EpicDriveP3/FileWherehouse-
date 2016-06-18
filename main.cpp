@@ -11,6 +11,9 @@
 #include "ArbolBS.h"
 #include <sys/types.h>
 #include <dirent.h>
+#include "ArbolBS.h"
+#include "ArbolBRegister.h"
+#include "msgHandler.h" 
 
 using namespace std;
 
@@ -139,17 +142,13 @@ int main(int argc, char** argv) {
     printf("%s/%s\n", dir, dp->d_name);
     }
     closedir(fd);*/
-    
-    
-    ArbolBS<int>* BPLUS=new ArbolBS<int>(3);
-    BPLUS->insertData(34);
-    BPLUS->insertData(45);
-    BPLUS->insertData(70);
-    BPLUS->insertData(50);
-    BPLUS->insertData(200);
-    BPLUS->insertData(100);
-    BPLUS->printTree();
-    BPLUS->findData(200);
-    
+    /*ArbolBS<int>* arbol= new ArbolBS<int>(5);
+    arbol->insertData(13);
+    arbol->insertData(15);
+    arbol->insertData(16);
+    arbol->insertData(20);
+    arbol->insertData(22);
+    arbol->printTree();*/
+    msgHandler * nuevo = new msgHandler(5000,"127.0.0.1","TuGfa.dat");
     return 0;
 }

@@ -27,10 +27,10 @@ class servidor : public Constantes{
 public:
     servidor(int port);
     virtual ~servidor();
-    void sendMsg(char* pMsg, int pSize);
+    void sendMsg(ClienteConnect<char*>* pData);
     void listenMsg(ClienteConnect<char*>* pDato);
     int getCantPersConnect();
-    int getSockFd(int pNumber);
+    ClienteConnect<char*> getSockFd(int pNumber);
 private:
     pthread_t _AceptThread, _ListenThread;
     pthread_mutex_t _lock;

@@ -10,11 +10,14 @@
 msgHandler::msgHandler(int pPort, const char* pIP, const char* pFilesPlace) {
     _FilesPlace=pFilesPlace;
     _server= new servidor(pPort);
+    _arbolB= new ArbolBS<int>(3);
     int CantOfPeopleConnect=0;
     pthread_t starter;
     while(true){
         if(CantOfPeopleConnect<_server->getCantPersConnect()){
-            pthread_create(&starter, NULL, mainLoopHelper,this);
+            cout<<"prueba de conexion"<<endl;
+            ThreadClienteData temp={CantOfPeopleConnect,(void*)this};
+            pthread_create(&starter, NULL, mainLoopHelper,(void*)&temp);
             CantOfPeopleConnect++;
         }
     }
@@ -24,16 +27,22 @@ msgHandler::~msgHandler() {
     
 }
 
-void* msgHandler::mainLoop() {
-    int sockfd=_server->getSockFd(_server->getCantPersConnect());
+void* msgHandler::mainLoop(void* pData) {
+    ThreadClienteData temp = *((ThreadClienteData*)pData);
+    
+    ClienteConnect<char*> AtributosClientes=_server->getSockFd(
+    temp._NumberOfThread);
+    
     while(true){
-        std::string msg;//= _server->listenMsg();
+        _server->listenMsg(&AtributosClientes);
         rapidjson::Document _JsonDocument;
-        _JsonDocument.Parse(msg.c_str());
+        _JsonDocument.Parse((const char*)AtributosClientes._dato);
         if(!_JsonDocument.IsObject()){
             std::cout<<"falla, archivo no es tipo json"<<std::endl;
             return NULL;
         }
+        
+        
         //obtenemos la operacion a realizar
         rapidjson::Value & data = _JsonDocument[OPERATION];
         int op= data.GetInt();
@@ -43,16 +52,17 @@ void* msgHandler::mainLoop() {
             //bloque para econtrar repetidos
             /*if(_DataBaseTable->Search(data.GetInt())){}
             else{
-                write(msg.c_str());
+                string datoTemp=AtributosClientes._dato;
+                write(datoTemp.c_str());
             }*/
         }
         //bloque de lectura
         else if(op==READ){
-            read(data.GetString(),sockfd);
+            read(data.GetString(), AtributosClientes._sockFd);
         }
         //bloque de borrado
         else if(op==DEL){
-            eliminar(data.GetString());
+            eliminar((const char*)data.GetString());
         }
     }
 }

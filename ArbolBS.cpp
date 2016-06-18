@@ -14,11 +14,12 @@
  */
 template<class Dp>
 ArbolBS<Dp>::ArbolBS(int pKeys) {
-    if(pKeys<DOS || (pKeys%DOS==0)){
+    if(pKeys<DOS || (pKeys%DOS!=0)){
         _keys=pKeys;
         _root=NULL;
-        
     }
+    else
+        error("Datos incorrecto para arbol\0");
 }
 
 /**
@@ -43,7 +44,7 @@ void ArbolBS<Dp>::insertData(Dp pData) {
         _root->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         _root->_Sons=NULL;
         _root->_father=NULL;
-        _root->_datas[_root->_NOfDatas]=pData;
+        _root->_datas[CERO]=pData;
         //_root->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
         _root->_NOfDatas++;
         return;
