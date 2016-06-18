@@ -64,7 +64,6 @@ void servidor::sendMsg(ClienteConnect<char*>* pData) {
 }
 
 void servidor::listenMsg(ClienteConnect<char*>* pData) {
-    pData->_dato=(char*)malloc(SPACE_MEMORY);
     bzero(pData->_dato, SPACE_MEMORY);
     _n = recv(pData->_sockFd,pData->_dato,
             SPACE_MEMORY-UNO,CERO);

@@ -6,6 +6,7 @@
  */
 
 #include "msgHandler.h"
+#include "ArbolBRegister.h"
 
 msgHandler::msgHandler(int pPort, const char* pIP, const char* pFilesPlace) {
     _FilesPlace=pFilesPlace;
@@ -32,7 +33,7 @@ void* msgHandler::mainLoop(void* pData) {
     
     ClienteConnect<char*> AtributosClientes=_server->getSockFd(
     temp._NumberOfThread);
-    
+    AtributosClientes._dato=(char*)malloc(SPACE_MEMORY);
     while(true){
         _server->listenMsg(&AtributosClientes);
         rapidjson::Document _JsonDocument;
@@ -41,8 +42,6 @@ void* msgHandler::mainLoop(void* pData) {
             std::cout<<"falla, archivo no es tipo json"<<std::endl;
             return NULL;
         }
-        
-        
         //obtenemos la operacion a realizar
         rapidjson::Value & data = _JsonDocument[OPERATION];
         int op= data.GetInt();
@@ -50,11 +49,11 @@ void* msgHandler::mainLoop(void* pData) {
         data=_JsonDocument[ID];
         if(op==WRITE){
             //bloque para econtrar repetidos
-            /*if(_DataBaseTable->Search(data.GetInt())){}
+            if(_DataBaseTable->Search(data.GetInt())){}
             else{
                 string datoTemp=AtributosClientes._dato;
                 write(datoTemp.c_str());
-            }*/
+            }
         }
         //bloque de lectura
         else if(op==READ){
