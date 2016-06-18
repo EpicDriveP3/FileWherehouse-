@@ -27,6 +27,7 @@ public:
     void borrarData(Dp pData);
     bool findData(Dp pData);
     void printTree();
+    Dp getData(Dp pData);
 private:
     //nodo raiz
     NodoBTree<Dp>* _root;
@@ -38,6 +39,7 @@ private:
     void desplacementNode(NodoBTree<Dp>* pNodo, Dp pDato);
     void deleteHelper(NodoBTree<Dp>* pNodo, NodoBTree<Dp>* pPadre,Dp pDato);
     bool findHelper(NodoBTree<Dp>* pNodo, Dp pDato);
+    Dp getDataHelper(NodoBTree<Dp>* pNodo, Dp pDato);
     void printTreeHelper(NodoBTree<Dp>* pNodo, int pNodoNumber);
 };
 

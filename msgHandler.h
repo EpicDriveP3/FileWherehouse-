@@ -28,7 +28,7 @@ private:
     servidor* _server;
     const char* _FilesPlace;
     HashTable* _DataBaseTable;
-    ArbolBS<int>* _arbolB;
+    ArbolBS<char*>* _arbolB;
     void* fileDataBase();
     void* mainLoop(void* pData);
     static void* mainLoopHelper(void* data){
@@ -38,6 +38,8 @@ private:
     void write( const char* msg);
     void read(const char* msg, int sockfd);
     void eliminar(const char* msg);
+    string generateJson(void * pDato, const char* msg, const char* mimeType
+    , int largo);
 };
 
 #endif	/* MSGHANDLER_H */

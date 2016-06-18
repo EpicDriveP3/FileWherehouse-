@@ -189,6 +189,47 @@ int main(int argc, char** argv) {
     }
     closedir(fd);*/
     msgHandler * nuevo = new msgHandler(5000,"127.0.0.1","FileWarehouse++\0");
+    /*
+    fstream file;
+    
+    string temp ="mafalda";
+    file.open(temp, ios::in|ios::out|ios::binary);
+    
+    file.seekg(0, ios::end);
+    int largo=file.tellg();
+    cout<<largo<<endl;
+    file.seekg(0);
+    void * lector= malloc(largo);
+    file.read((char*)lector,largo);
+    //cout<<(char*)lector<<endl;
+    file.close();
+    char* newMsg= (char*)malloc(largo+45);
+    string finalMsg="{\"op\":";
+    finalMsg.append("1");
+    finalMsg.append(",");
+    //getDataOfJson= _JsonDocument["id"];
+    finalMsg.append("\"id\":");
+    finalMsg.append("3");
+    finalMsg.append(",");
+    //getDataOfJson= _JsonDocument["msg"];
+    finalMsg.append("\"mimeType\":");
+    finalMsg.append(".png");
+    finalMsg.append(",");
+    finalMsg.append("\"msg\":{");
+    cout<<"prueba"<<endl;
+    strncpy(newMsg, finalMsg.c_str(), 41);
+    /*int i=43;
+    for(; i<largo; i++){
+        *(newMsg+i)=*((char*)(lector+i));
+    }
+    //memcpy(newMsg, lector, largo);
+    //strncpy((char*)finalMsg.c_str(), (char*)lector,largo);
+    //finalMsg.append("}}");
+    newMsg[largo+43]='}';
+    newMsg[largo+44]='}';
+    //newMsg[largo+44]='\0';
+    cout<<newMsg<<endl;
+    cout<<finalMsg<<endl;*/
     
     return 0;
 }

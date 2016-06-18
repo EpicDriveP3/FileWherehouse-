@@ -418,6 +418,56 @@ bool ArbolBS<Dp>::findHelper(NodoBTree<Dp>* pNodo, Dp pDato) {
     return findHelper(pNodo->_Sons[i],pDato );
 }
 
+template<typename Dp>
+Dp ArbolBS<Dp>::getData(Dp pData) {
+    ///verifica que no tenga hijos la raiz
+    if(_root->_Sons==NULL){
+        ///busca dentro del nodo si existe el dato
+        int i=0;bool flag=false;
+        for(; i<_root->_NOfDatas; i++)
+            if(memcmp(&pData, &_root->_datas[i],sizeof(Dp))==CERO){
+                cout<<"find it"<<endl;
+                flag=true;
+                break;
+            }
+        if(flag)
+            return _root->_datas[i];
+        return NULL;
+        
+    }
+    ///si tiene hijos recursiona
+    return getDataHelper(_root,pData);
+}
+
+template<typename Dp>
+Dp ArbolBS<Dp>::getDataHelper(NodoBTree<Dp>* pNodo, Dp pDato) {
+    ///verifica si existe el hijo dentro del nodo
+    int i=0;bool flag=false;
+    for(; i<pNodo->_NOfDatas; i++)
+        if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))==CERO){
+            cout<<"find it"<<endl;
+            flag=true;
+            break;
+        }
+    ///retorna una verdadero si existe el dato
+    if(flag)
+        return pNodo->_datas[i];
+    ///si ya no tiene hijos se dice que el dato ya existe ya que no quedan datos
+    ///por revisar.
+    if(pNodo->_Sons==NULL)
+        return NULL;
+    ///verifica en que hijo recursionar y realiza esta misma.
+    i=0;
+    for(; i<pNodo->_NOfDatas; i++){
+        if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))<CERO)
+            break;
+    }
+    return getDataHelper(pNodo->_Sons[i],pDato );
+}
+
+
+
+
 /**
  * metodo para imprimir todos los objetos del arbol
  */
