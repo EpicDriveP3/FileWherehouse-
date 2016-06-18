@@ -142,13 +142,36 @@ int main(int argc, char** argv) {
     printf("%s/%s\n", dir, dp->d_name);
     }
     closedir(fd);*/
-    /*ArbolBS<int>* arbol= new ArbolBS<int>(5);
+    ArbolBS<int>* arbol= new ArbolBS<int>(3);
     arbol->insertData(13);
-    arbol->insertData(15);
-    arbol->insertData(16);
+    arbol->insertData(10);
+    arbol->insertData(11);
     arbol->insertData(20);
     arbol->insertData(22);
-    arbol->printTree();*/
-    msgHandler * nuevo = new msgHandler(5000,"127.0.0.1","TuGfa.dat");
+    arbol->insertData(22);
+    arbol->insertData(9);
+    arbol->insertData(5);
+    arbol->insertData(30);
+    arbol->insertData(35);
+    arbol->insertData(21);
+    arbol->insertData(15);
+    arbol->insertData(7);
+    arbol->insertData(4);
+    arbol->insertData(18);
+    arbol->insertData(14);
+    arbol->insertData(23);
+    arbol->insertData(97);
+    arbol->insertData(58);
+    arbol->insertData(3);
+    arbol->insertData(53);
+    arbol->insertData(19);
+    arbol->insertData(150);
+    arbol->insertData(71);
+    arbol->insertData(46);
+    arbol->printTree();
+    cout<<"--"<<endl;
+    /*
+    */
+    //msgHandler * nuevo = new msgHandler(5000,"127.0.0.1","TuGfa.dat");
     return 0;
 }
