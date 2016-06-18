@@ -68,6 +68,8 @@ void msgHandler::read(const char* msg, int sockfd) {
 }
 
 void msgHandler::write(const char* msg) {
+    
+    //_DataBaseTable->Write()
 
 }
 
