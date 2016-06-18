@@ -17,6 +17,7 @@ ArbolBS<Dp>::ArbolBS(int pKeys) {
     if(pKeys<DOS || (pKeys%DOS==0)){
         _keys=pKeys;
         _root=NULL;
+        
     }
 }
 
@@ -308,6 +309,15 @@ void ArbolBS<Dp>::desplacementNode(NodoBTree<Dp>* pNodo, Dp pDato) {
  */
 template<class Dp>
 void ArbolBS<Dp>::borrarData(Dp pData) {
+    
+}
+
+/**
+ * 
+ */
+template<typename Dp>
+void ArbolBS<Dp>::deleteHelper(NodoBTree<Dp>* pNodo, NodoBTree<Dp>* pPadre,
+        Dp pDato) {
 
 }
 
@@ -364,6 +374,34 @@ bool ArbolBS<Dp>::findHelper(NodoBTree<Dp>* pNodo, Dp pDato) {
             break;
     }
     return findHelper(pNodo->_Sons[i],pDato);
+}
+
+/**
+ * metodo para imprimir todos los objetos del arbol
+ */
+template<typename Dp>
+void ArbolBS<Dp>::printTree() {
+    if(_root==NULL)
+        return;
+    printTreeHelper(_root,CERO);
+}
+
+/**
+ * metodo de ayuda par ir recursionando hasta imprimir todos los objetos
+ * del arbol
+ */
+template<typename Dp>
+void ArbolBS<Dp>::printTreeHelper(NodoBTree<Dp>* pNodo, int pNodoNumber) {
+    if(pNodo==NULL)
+        return;
+    if(pNodo->_Sons!=NULL){
+        for(int i=0; i<pNodo->_NOfDatas+UNO;i++)
+            printTreeHelper(pNodo->_Sons[i],pNodoNumber+(i+UNO));
+    }
+    cout<<"----------nodo---------"<<endl;
+    for(int i=0; i<pNodo->_NOfDatas; i++)
+        cout<<pNodo->_datas[i]<<" - ";
+    cout<<"\n";
 }
 
 ///instanceacion explicita

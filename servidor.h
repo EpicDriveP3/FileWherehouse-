@@ -28,18 +28,20 @@ public:
     servidor(int port);
     virtual ~servidor();
     void sendMsg(char* pMsg, int pSize);
-    const char* listenMsg();
+    void listenMsg(ClienteConnect<char*>* pDato);
+    int getCantPersConnect();
+    int getSockFd(int pNumber);
 private:
     pthread_t _AceptThread, _ListenThread;
+    pthread_mutex_t _lock;
     //datos propios de la instanciacion del servidor
     int _sockfd, _newsockfd, _portno, _n, _codigos;
     socklen_t _clilen;
     void* _dataRecivedFromSocket;
-    Lista<int>* _listOfSocket;
+    Lista<ClienteConnect<char*>>* _listOfClient;
     struct sockaddr_in _serv_addr, _cli_addr;
     void* startListening(void* Data);
     void* startAcepting(void);
-    void error(const char* msg);
     /**
      * metodo para inicializar el hilo principal que esta escuchando
      * conexiones de los clientes.

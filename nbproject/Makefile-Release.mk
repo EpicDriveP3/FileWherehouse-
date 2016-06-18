@@ -35,13 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/ArbolB.o \
+	${OBJECTDIR}/ArbolBRegister.o \
 	${OBJECTDIR}/ArbolBS.o \
 	${OBJECTDIR}/Constantes.o \
 	${OBJECTDIR}/HashTable.o \
-	${OBJECTDIR}/Lista.o \
-	${OBJECTDIR}/Nodo.o \
-	${OBJECTDIR}/NodoB.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/msgHandler.o \
 	${OBJECTDIR}/servidor.o
@@ -71,10 +68,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/filewarehouse__: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/filewarehouse__ ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/ArbolB.o: ArbolB.cpp 
+${OBJECTDIR}/ArbolBRegister.o: ArbolBRegister.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ArbolB.o ArbolB.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ArbolBRegister.o ArbolBRegister.cpp
 
 ${OBJECTDIR}/ArbolBS.o: ArbolBS.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -90,21 +87,6 @@ ${OBJECTDIR}/HashTable.o: HashTable.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/HashTable.o HashTable.cpp
-
-${OBJECTDIR}/Lista.o: Lista.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Lista.o Lista.cpp
-
-${OBJECTDIR}/Nodo.o: Nodo.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Nodo.o Nodo.cpp
-
-${OBJECTDIR}/NodoB.o: NodoB.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NodoB.o NodoB.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

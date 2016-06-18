@@ -7,7 +7,8 @@
 
 #include "Constantes.h"
 
-const char* Constantes::DISK_LOCATION="server_datas.txt\0";
+const char* Constantes::DISK_LOCATION="HashTable.dat\0";
+const char* Constantes::DISK_LOCATION_TEMP="temp.dat\0";
 const char* Constantes::ID="id\0";
 const char* Constantes::OPERATION="op\0";
 const char* Constantes::MSG="msg\0";
@@ -19,3 +20,4 @@ const char* Constantes::ERROR4="ERROR writing to socket\0";
 const char* Constantes::ERROR5="ERROR reading from socket\0";
 const char* Constantes::ERROR6="ERROR opening main thread\0";
 const char* Constantes::ERROR7="ERROR opening client thread\0";
+const char* Constantes::HASH_TABLE_LOCATION="HashTable.dat\0";

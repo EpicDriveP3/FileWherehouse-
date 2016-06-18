@@ -18,29 +18,26 @@
 #include <fstream>
 #include <string.h>
 #include <sstream>
+#include "Constantes.h"
 
 namespace std{
 
-class HashTable{
+template <typename Dp>
+class HashTable : public Constantes{
     public:
 	HashTable();
 	virtual ~HashTable();
         HashTable(const HashTable& orig);
-	void Write(int key, string data, int indice);
-	void Display(int indice);
-	void Search(int key, int indice);
-	void Delete(int key, int indice);
+	void Write(int key, Dp data);
+	void Display();
+	void Search(int key);
+	void Delete(int key);
 	int key;
-	char *data;
+	Dp data;
         int buckets;
+        int * elements_for_bucket;
 };
-/*
-template<typename Dp>
-struct RegisterData{
-int _keyAdmno;
-Dp Dato;
-int _sizeOfData;
-};*/
+
 } /* namespace std */
 
 #endif /* STUDENT_H_ */

@@ -1,35 +1,29 @@
 /* 
- * File:   ArbolBS.h
+ * File:   ArbolBRegister.h
  * Author: ellioth
  *
- * Created on June 10, 2016, 11:11 AM
+ * Created on June 15, 2016, 11:24 PM
  */
 
-#ifndef ARBOLBS_H
-#define	ARBOLBS_H
+#ifndef ARBOLBREGISTER_H
+#define	ARBOLBREGISTER_H
 #include "Constantes.h"
 #include "structs.h"
-#include <iostream>
 #include <string.h>
 #include <string>
-/**
- * cuando se invoca en el campo este algoritmo proboca que genere un 
- * arbolB con diez mil puntos de vida.
- */
-using namespace std;
 
 template <typename Dp>
-class ArbolBS: public Constantes {
+class ArbolBRegister : public Constantes{
 public:
-    ArbolBS(int pKeys);
-    virtual ~ArbolBS();
+    ArbolBRegister(int pKeys);
+    virtual ~ArbolBRegister();
     void insertData(Dp pData);
     void borrarData(Dp pData);
     bool findData(Dp pData);
     void printTree();
 private:
     //nodo raiz
-    NodoBTree<Dp>* _root;
+    NodoBTree<Dp> _root;
     //numero de Keys que usamos en el arbol.
     int _keys;
     int _sizeOfRegister;
@@ -41,5 +35,5 @@ private:
     void printTreeHelper(NodoBTree<Dp>* pNodo, int pNodoNumber);
 };
 
-#endif	/* ARBOLBS_H */
+#endif	/* ARBOLBREGISTER_H */
 

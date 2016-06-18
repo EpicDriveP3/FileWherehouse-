@@ -9,7 +9,9 @@
 
 servidor::servidor(int port) {
     _portno= port;
-    _listOfSocket=new Lista<int>();
+    _listOfClient=new Lista<ClienteConnect<char*>>();
+    if(pthread_mutex_init(&_lock,NULL)!=CERO)
+        error("mutex falied on create");
     if(pthread_create(&_AceptThread, NULL, servidor::startMainThread,this)!=CERO)
         error(ERROR6);
 }
@@ -19,7 +21,7 @@ servidor::~servidor() {
 }
 
 void* servidor::startAcepting() {
-    _dataRecivedFromSocket= malloc(CIENTO_VEINTE_OCHO);
+    //_dataRecivedFromSocket= malloc(CIENTO_VEINTE_OCHO);
     _sockfd = socket(AF_INET, SOCK_STREAM, CERO);
     //resivision de si la conexion del socket 
     // fue positiva o fallida.
@@ -45,23 +47,31 @@ void* servidor::startAcepting() {
         if(DEBUG)
             printf("servidor: got connection from %s port %d\n",
                     inet_ntoa(_cli_addr.sin_addr), ntohs(_cli_addr.sin_port));
-        //_listOfSocket->insert(_newsockfd);
-        ThreadClienteData nuevo={_newsockfd, this};
-        if(pthread_create(&_ListenThread,NULL, &servidor::startListeningThread
-                ,&nuevo)!=CERO)
-            error(ERROR7);
+        ClienteConnect<char*> temp= {_newsockfd, NULL, true};
+        pthread_mutex_lock(&_lock);
+        _listOfClient->insert(temp);
+        pthread_mutex_unlock(&_lock);
     }
     close(_sockfd);
 }
 
-void* servidor::startListening(void* Data) {
-    int sockFD= ((ThreadClienteData*)Data)->_sockFd;
-    bzero(_dataRecivedFromSocket, CIENTO_VEINTE_OCHO);
-    _n = recv(_newsockfd,_dataRecivedFromSocket,
-            CIENTO_VEINTE_OCHO-UNO,0);
-    if(_n<CERO)
-        error(ERROR5);
-    
+void* servidor::startListening(void* pData) {
+    int sockFD= ((ThreadClienteData*)pData)->_sockFd;
+    void * data= malloc(SPACE_MEMORY);
+    pthread_mutex_lock(&_lock);
+    //_listOfMSG->insert("--");
+    pthread_mutex_unlock(&_lock);
+    while(true){
+        bzero(data, SPACE_MEMORY);
+        if(recv(sockFD,data,SPACE_MEMORY-UNO,0)<=CERO){
+            error(ERROR5);
+        }
+        pthread_mutex_lock(&_lock);
+        //int place=_listOfSocket->getPlace(sockFD);
+        //_listOfMSG->get(place)->setData(data);
+        
+        pthread_mutex_unlock(&_lock);
+    }
     ///falta hacer el salvado de datos
 }
 
@@ -73,16 +83,26 @@ void servidor::sendMsg(char* pMsg, int pSize) {
         cout<<"mensaje enviado"<<endl;
 }
 
-const char* servidor::listenMsg() {
-    bzero(_dataRecivedFromSocket, CIENTO_VEINTE_OCHO);
-    _n = recv(_newsockfd,_dataRecivedFromSocket,
+void servidor::listenMsg(ClienteConnect<char*>* pData) {
+    bzero(pData->_dato, CIENTO_VEINTE_OCHO);
+    _n = recv(pData->_sockFd,pData->_dato,
             CIENTO_VEINTE_OCHO-UNO,0);
     if(_n<CERO)
         error(ERROR5);
-    return (const char*)_dataRecivedFromSocket;   
 }
 
-void servidor::error(const char* msg) {
-    perror(msg);
-    exit(UNO);
+int servidor::getCantPersConnect() {
+    int size;
+    pthread_mutex_lock(&_lock);
+    size=_listOfClient->size();
+    pthread_mutex_unlock(&_lock);
+    return size;
+}
+
+int servidor::getSockFd(int pNumber) {
+    int sockfd;
+    pthread_mutex_lock(&_lock);
+    //sockfd=_listOfClient->get(pNumber);
+    pthread_mutex_unlock(&_lock);
+    return sockfd;
 }

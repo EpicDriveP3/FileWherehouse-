@@ -7,6 +7,9 @@
 
 #include <cstdlib>
 #include "HashTable.h"
+#include "structs.h"
+#include <sys/types.h>
+#include <dirent.h>
 
 using namespace std;
 
@@ -14,7 +17,7 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-     
+    /*
     int ch, key, indice, type;
     string tmp2;
     HashTable HT;
@@ -98,7 +101,43 @@ int main(int argc, char** argv) {
         }
     
     }
+     * *
+    int key=4;
+    RegisterBTree<int> regPrueba;
+    regPrueba._datas= (int*)calloc(sizeof(int),(key-1));
+    regPrueba._sons=(int*)calloc(sizeof(int),key);
+    regPrueba._datas[0]=23;
+    regPrueba._key=key;
+    regPrueba._NofDatas++;
+    regPrueba._father=0;
+    int sizeReg= (key-1)*4 + key*4 + 12;
+    fstream file;
+    file.open("FilesPlaces.dat", ios::binary|ios::app);
+    file.write((const char*)&regPrueba, sizeReg);
+    
+    RegisterBTree<int> regPruebaRead;
+    file.read((char*)&regPruebaRead, sizeReg);
+    cout<<regPruebaRead._father<<endl;
+    cout<<regPruebaRead._key<<endl;
+    cout<<regPruebaRead._NofDatas<<endl;
+    for(int i =0; i<key; i++)
+        cout<<regPruebaRead._datas[i]<<endl;
+    for(int i =0; i<key; i++)
+        cout<<regPruebaRead._sons[i]<<endl;
+    file.close();*/
+    /*char* dir="/home/ellioth/NetBeansProjets2/FileWarehouse++\0";
+    struct dirent *dp;
+    DIR *fd;
+    if ((fd = opendir(dir)) == NULL) {
+      fprintf(stderr, "listdir: can't open %s\n", dir);
+      return 0;
+    }
+    while ((dp = readdir(fd)) != NULL) {
+    if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
+      continue;    /* skip self and parent 
+    printf("%s/%s\n", dir, dp->d_name);
+    }
+    closedir(fd);*/
     
     return 0;
 }
-
