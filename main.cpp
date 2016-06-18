@@ -10,6 +10,9 @@
 #include "structs.h"
 #include <sys/types.h>
 #include <dirent.h>
+#include "ArbolBS.h"
+#include "ArbolBRegister.h"
+
 
 using namespace std;
 
@@ -138,6 +141,12 @@ int main(int argc, char** argv) {
     printf("%s/%s\n", dir, dp->d_name);
     }
     closedir(fd);*/
-    
+    ArbolBS<int>* arbol= new ArbolBS<int>(5);
+    arbol->insertData(13);
+    arbol->insertData(15);
+    arbol->insertData(16);
+    arbol->insertData(20);
+    arbol->insertData(22);
+    arbol->printTree();
     return 0;
 }

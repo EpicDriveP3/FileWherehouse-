@@ -23,7 +23,7 @@ public:
     int size();
     void borrar(Dp pDato);
     Nodo<Dp>* get(int place);
-    Nodo<Dp>* get(Dp pDato);
+    Nodo<Dp>* find(Dp pDato);
     int getPlace(Dp pDato);
     void set(int place, Dp dato);
 private:
@@ -97,11 +97,11 @@ Nodo<Dp>* Lista<Dp>::get(int place) {
     Nodo<Dp>* temp=_head;
     for(int i=0; i<place; i++)
         temp=temp->getNext();
-    return temp->getData();
+    return temp;
 }
 
 template<class Dp>
-Nodo<Dp>* Lista<Dp>::get(Dp pData) {
+Nodo<Dp>* Lista<Dp>::find(Dp pData) {
     Nodo<Dp>* temp=_head;
     int i=0;
     for(; i<_size; i++)

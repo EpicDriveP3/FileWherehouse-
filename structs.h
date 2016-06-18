@@ -14,7 +14,7 @@
  * hilos.
  */
 struct ThreadClienteData{
-    int _sockFd;
+    int _NumberOfThread;
     void* _clase;
 };
 

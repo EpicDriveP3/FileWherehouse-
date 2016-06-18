@@ -28,9 +28,10 @@ private:
     const char* _FilesPlace;
     HashTable<std::string>* _DataBaseTable;
     void* fileDataBase();
-    void* mainLoop(void);
+    void* mainLoop(void* pData);
     static void* mainLoopHelper(void* data){
-        return ((msgHandler*)data)->mainLoop();
+        ThreadClienteData temp= *((ThreadClienteData*)data);
+        return ((msgHandler*)(temp._clase))->mainLoop(&temp);
     };
     void write( const char* msg);
     void read(const char* msg, int sockfd);
