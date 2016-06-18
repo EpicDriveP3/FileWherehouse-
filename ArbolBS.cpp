@@ -39,18 +39,17 @@ template<class Dp>
 void ArbolBS<Dp>::insertData(Dp pData) {
     ///la raiz no existe
     if(_root==NULL){
-        _root= _root= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
+        _root= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
         _root->_Keys=_keys;
         _root->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         _root->_Sons=NULL;
         _root->_father=NULL;
         _root->_datas[CERO]=pData;
-        //_root->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
         _root->_NOfDatas++;
         return;
     }
     ///el nodo aun no va a reventar
-    else if(_root->_NOfDatas<_root->_Keys){
+    else if(_root->_NOfDatas<_keys){
         if (_root->_Sons==NULL){
             desplacementNode(_root,pData);
             return;
@@ -65,8 +64,15 @@ void ArbolBS<Dp>::insertData(Dp pData) {
         
     }
     ///el nodo ocupa reventar
-    breakNode(_root);
-    insertHelper(_root, NULL, pData);
+    cout<<"va a reventar el nodo"<<endl;
+    _root=breakNode(_root);
+    cout<<"nodo reventado"<<endl;
+    int i=0;
+    for(; i<_root->_NOfDatas; i++){
+        if(memcmp(&pData, &_root->_datas[i],sizeof(Dp))<CERO)
+            break;
+    }
+    insertHelper(_root->_Sons[i],_root, pData);
     return;
     
 }
@@ -88,31 +94,37 @@ void ArbolBS<Dp>::insertHelper(NodoBTree<Dp>* pNodo, NodoBTree<Dp>* pPadre,
         ///caso por si se ocupa que se haga un desplazamiento de los
         ///datos e ingresar el dato.
         if (pNodo->_Sons==NULL){
+            bool ifExists=false;
+            for(int i=0; i<pNodo->_NOfDatas; i++){
+                if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))==CERO){
+                    ifExists=true;
+                    break;
+                }
+            }
+            if(ifExists)
+                return;
             desplacementNode(pNodo,pDato);
             return;
         }
         ///caso en el que se tiene si el nodo esta con hijos
         for(; i<pNodo->_NOfDatas; i++){
-            if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))<CERO){
-                flag=true;
+            if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))<CERO)
                 break;
-            }
         }
-        if(flag)
-            insertHelper(pNodo->_Sons[i],pNodo->_father, pDato);
+        insertHelper(pNodo->_Sons[i],pNodo->_father, pDato);
         return;
     }
     //rompemos el nodo
+    cout<<"entra a romper el nodo"<<endl;
     pNodo=breakNode(pNodo);
+    cout<<"termina"<<endl;
     //buscamos en que posicion vamos a recursionar para ingresar el dato
     for(; i<pNodo->_NOfDatas; i++){
         if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))<CERO){
-            flag=true;
             break;
         }
     }
-    if(flag)
-        insertHelper(pNodo->_Sons[i], pNodo, pDato);
+    insertHelper(pNodo->_Sons[i], pNodo, pDato);
     return;
 }
 
@@ -127,6 +139,7 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
     int middle=_keys/DOS;
     ///se revisa que el nodo no tenga padre para romperlo
     if(pNodo->_father==NULL){
+        cout<<"prueba1"<<endl;
         //fase para cuando no se tienen hijos, como se va a comportar
         //para realizar el quiebre del hijo
         if(pNodo->_Sons==NULL){
@@ -141,17 +154,23 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
             pNodo->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
             for(int i=0; i<_keys+UNO; i++){
                 pNodo->_Sons[i]=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
+                pNodo->_Sons[i]->_Keys=_keys;
+                pNodo->_Sons[i]->_NOfDatas=0;
+                pNodo->_Sons[i]->_Sons=NULL;
+                pNodo->_Sons[i]->_datas=(Dp*)malloc(_keys*sizeof(Dp));
                 pNodo->_Sons[i]->_father=pNodo;
             }
             NodoBTree<Dp>* pHijoIzq=pNodo->_Sons[CERO];
             NodoBTree<Dp>* pHijoDer=pNodo->_Sons[UNO];
             for(int i=0; i<middle; i++)
-                insertHelper(pHijoIzq,pNodo,pNodo->_datas[i]);
-            for(int i=middle+UNO; i<pNodo->_NOfDatas; i++)
-                insertHelper(pHijoDer,pNodo,pNodo->_datas[i]);
+                desplacementNode(pHijoIzq,pNodo->_datas[i]);
+            for(int i=middle+UNO; i<_keys; i++)
+                desplacementNode(pHijoDer,pNodo->_datas[i]);
             Dp Dato= pNodo->_datas[middle];
-            free(pNodo->_datas);
+            //free(pNodo->_datas);
             pNodo->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
+            pNodo->_NOfDatas=0;
+            desplacementNode(pNodo,Dato);
             pNodo->_datas[CERO]=Dato;
             pNodo->_NOfDatas=UNO;
             return pNodo;
@@ -170,40 +189,47 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
          * al nodo y se reinicia el contador de datos internos.
          */
         NodoBTree<Dp>* pHijoIzq=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
+        pHijoIzq->_Keys=_keys;
         pHijoIzq->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         pHijoIzq->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
+        pHijoIzq->_father=pNodo;
         NodoBTree<Dp>* pHijoDer=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
+        pHijoDer->_Keys=_keys;
         pHijoDer->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         pHijoDer->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
+        pHijoDer->_father=pNodo;
         for(int i=0; i<middle; i++)
-            insertHelper(pHijoIzq,pNodo,pNodo->_datas[i]);
+            desplacementNode(pHijoIzq,pNodo->_datas[i]);
         for(int i=middle+UNO; i<pNodo->_NOfDatas; i++)
-            insertHelper(pHijoDer,pNodo,pNodo->_datas[i]);
-        for(int i=0; i<middle; i++){
+            desplacementNode(pHijoDer,pNodo->_datas[i]);
+        for(int i=0; i<=middle; i++){
             pHijoIzq->_Sons[i]=pNodo->_Sons[i];
             pHijoIzq->_Sons[i]->_father=pHijoIzq;
         }
-        for(int i =middle; i <_keys; i++){
-            pHijoDer->_Sons[i]=pNodo->_Sons[i];
-            pHijoDer->_Sons[i]->_father=pHijoDer;
+        for(int i =middle+UNO,j=0; i <=_keys; i++,j++){
+            pHijoDer->_Sons[j]=pNodo->_Sons[i];
+            pHijoDer->_Sons[j]->_father=pHijoDer;
         }
         Dp Dato= pNodo->_datas[middle];
-        free(pNodo->_datas);
-        free(pNodo->_Sons);
         pNodo->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         pNodo->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
-        for(int i=0; i<_keys+UNO; i++){
+        for(int i=DOS; i<_keys+UNO; i++){
             pNodo->_Sons[i]=(NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
+            pNodo->_Sons[i]->_NOfDatas=0;
             pNodo->_Sons[i]->_father=pNodo;
         }
+        //free(pNodo->_datas);
+        //free(pNodo->_Sons);
         pNodo->_Sons[CERO]=pHijoIzq;
         pNodo->_Sons[UNO]=pHijoDer;
         pNodo->_datas[CERO]=Dato;
         pNodo->_NOfDatas=UNO;
         return pNodo;
     }
+    cout<<"prueba2"<<endl;
     ///fase para cuando se tiene un padre
     if(pNodo->_Sons==NULL){
+        cout<<"prueba3"<<endl;
         /**
          * esta fase es para cuando se ocupa reventar un nodo con padre pero
          * sin hijos. se crea el apuntador al padre y los hijos nuevos que se
@@ -215,28 +241,35 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
         NodoBTree<Dp>* padre=pNodo->_father;
         NodoBTree<Dp>* HijoIzq= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
         HijoIzq->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
+        HijoIzq->_Keys=_keys;
         HijoIzq->_Sons=NULL;
         HijoIzq->_father=padre;
         NodoBTree<Dp>* HijoDer= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
         HijoDer->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
+        HijoDer->_Keys=_keys;
         HijoDer->_Sons=NULL;
         HijoDer->_father=padre;
-        insertHelper(padre,padre->_father,pNodo->_datas[middle]);
+        desplacementNode(padre,pNodo->_datas[middle]);
         for(int i=0; i<middle; i++)
-            insertHelper(HijoIzq,NULL,pNodo->_datas[i]);
-        for(int i =middle+UNO; i <_keys+UNO; i++) 
-            insertHelper(HijoDer,NULL,pNodo->_datas[i]);
+            desplacementNode(HijoIzq,pNodo->_datas[i]);
+        for(int i =middle+UNO; i <_keys; i++){
+            cout<<i<<endl;
+            desplacementNode(HijoDer,pNodo->_datas[i]);
+        }
         int i=0;
-        for(; i<_root->_NOfDatas; i++){
+        for(; i<padre->_NOfDatas; i++){
             if(memcmp(&pNodo->_datas[middle], &padre->_datas[i],sizeof(Dp))==CERO){
                 break;
             }
         }
         padre->_Sons[i]=HijoIzq;
         padre->_Sons[i+UNO]=HijoDer;
-        free(pNodo);
+        pNodo->_father=NULL;
+        pNodo->_Sons=NULL;
+        //free(pNodo);
         return padre;
     }
+    cout<<"4"<<endl;
     /**
      * seccion usada para cuando aparte de tener un padre se tienen hijos.
      * se crea el puntero del padre y los nuevos hijos, se inicializa todo en 
@@ -251,34 +284,38 @@ NodoBTree<Dp>* ArbolBS<Dp>::breakNode(NodoBTree<Dp>* pNodo) {
     NodoBTree<Dp>* padre=pNodo->_father;
     NodoBTree<Dp>* HijoIzq= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
     HijoIzq->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
+    HijoIzq->_Keys=_keys;
     HijoIzq->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
     HijoIzq->_father=padre;
     NodoBTree<Dp>* HijoDer= (NodoBTree<Dp>*)malloc(sizeof(NodoBTree<Dp>));
     HijoDer->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
+    HijoDer->_Keys=_keys;
     HijoDer->_Sons=(NodoBTree<Dp>**)malloc(sizeof(NodoBTree<Dp>*)*(_keys+UNO));
     HijoDer->_father=padre;
-    insertHelper(padre,padre->_father,pNodo->_datas[middle]);
+    desplacementNode(padre,pNodo->_datas[middle]);
     for(int i=0; i<middle; i++)
-        insertHelper(HijoIzq,NULL,pNodo->_datas[i]);
-    for(int i=0; i<middle; i++){
+        desplacementNode(HijoIzq,pNodo->_datas[i]);
+    for(int i=0; i<=middle; i++){
         HijoIzq->_Sons[i]=pNodo->_Sons[i];
         HijoIzq->_Sons[i]->_father=HijoIzq;
     }
-    for(int i =middle+UNO; i <_keys+UNO; i++) 
-        insertHelper(HijoDer,NULL,pNodo->_datas[i]);
-    for(int i =middle+UNO; i <_keys+UNO; i++){
-        HijoDer->_Sons[i]=pNodo->_Sons[i];
-        HijoDer->_Sons[i]->_father=HijoDer;
+    for(int i =middle+UNO; i <_keys; i++) 
+        desplacementNode(HijoDer,pNodo->_datas[i]);
+    for(int i =middle+UNO,j=0; i <=_keys; i++,j++){
+        HijoDer->_Sons[j]=pNodo->_Sons[i];
+        HijoDer->_Sons[j]->_father=HijoDer;
     }
     int i=0;
-    for(; i<_root->_NOfDatas; i++){
+    for(; i<padre->_NOfDatas; i++){
         if(memcmp(&pNodo->_datas[middle], &padre->_datas[i],sizeof(Dp))==CERO){
             break;
         }
     }
     padre->_Sons[i]=HijoIzq;
     padre->_Sons[i+UNO]=HijoDer;
-    free(pNodo);
+    pNodo->_father=NULL;
+    pNodo->_Sons=NULL;
+    //free(pNodo);
     return padre;
 }
 
@@ -296,8 +333,10 @@ void ArbolBS<Dp>::desplacementNode(NodoBTree<Dp>* pNodo, Dp pDato) {
         if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))<CERO)
             break;
     }
-    for(int j=pNodo->_NOfDatas;i<=j;j--){
+    for(int j=pNodo->_NOfDatas;i<j;j--){
         pNodo->_datas[j]=pNodo->_datas[j-UNO];
+        if(pNodo->_Sons!=NULL)
+                pNodo->_Sons[j+UNO]=pNodo->_Sons[j];
     }
     pNodo->_datas[i]=pDato;
     pNodo->_NOfDatas++;
@@ -375,7 +414,7 @@ bool ArbolBS<Dp>::findHelper(NodoBTree<Dp>* pNodo, Dp pDato) {
         if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))<CERO)
             break;
     }
-    return findHelper(pNodo->_Sons[i],pDato);
+    return findHelper(pNodo->_Sons[i],pDato );
 }
 
 /**
@@ -400,7 +439,7 @@ void ArbolBS<Dp>::printTreeHelper(NodoBTree<Dp>* pNodo, int pNodoNumber) {
         for(int i=0; i<pNodo->_NOfDatas+UNO;i++)
             printTreeHelper(pNodo->_Sons[i],pNodoNumber+(i+UNO));
     }
-    cout<<"----------nodo---------"<<endl;
+    cout<<"----------nodo---------"<<pNodoNumber<<endl;
     for(int i=0; i<pNodo->_NOfDatas; i++)
         cout<<pNodo->_datas[i]<<" - ";
     cout<<"\n";

@@ -49,11 +49,11 @@ void* msgHandler::mainLoop(void* pData) {
         data=_JsonDocument[ID];
         if(op==WRITE){
             //bloque para econtrar repetidos
-            if(_DataBaseTable->Search(data.GetInt())){}
+            /*if(_DataBaseTable->Search(data.GetInt())){}
             else{
                 string datoTemp=AtributosClientes._dato;
                 write(datoTemp.c_str());
-            }
+            }*/
         }
         //bloque de lectura
         else if(op==READ){
