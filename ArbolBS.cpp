@@ -336,6 +336,7 @@ bool ArbolBS<Dp>::findData(Dp pData) {
         int i=0;bool flag;
         for(; i<_root->_NOfDatas; i++)
             if(memcmp(&pData, &_root->_datas[i],sizeof(Dp))==CERO){
+                cout<<"find it"<<endl;
                 flag=true;
                 break;
             }
