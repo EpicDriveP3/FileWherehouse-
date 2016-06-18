@@ -27,7 +27,7 @@ public:
 private:
     servidor* _server;
     const char* _FilesPlace;
-    HashTable<std::string>* _DataBaseTable;
+    HashTable<std::string> _DataBaseTable;
     ArbolBS<int>* _arbolB;
     void* fileDataBase();
     void* mainLoop(void* pData);

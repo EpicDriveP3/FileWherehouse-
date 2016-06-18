@@ -44,7 +44,7 @@ void ArbolBS<Dp>::insertData(Dp pData) {
         _root->_datas=(Dp*)malloc(sizeof(Dp)*_keys);
         _root->_Sons=NULL;
         _root->_father=NULL;
-        _root->_datas[CERO]=pData;
+        _root->_datas[CERO];
         _root->_NOfDatas++;
         return;
     }
@@ -373,7 +373,7 @@ bool ArbolBS<Dp>::findData(Dp pData) {
     ///verifica que no tenga hijos la raiz
     if(_root->_Sons==NULL){
         ///busca dentro del nodo si existe el dato
-        int i=0;bool flag;
+        int i=0;bool flag=false;
         for(; i<_root->_NOfDatas; i++)
             if(memcmp(&pData, &_root->_datas[i],sizeof(Dp))==CERO){
                 cout<<"find it"<<endl;
@@ -395,9 +395,10 @@ bool ArbolBS<Dp>::findData(Dp pData) {
 template<class Dp>
 bool ArbolBS<Dp>::findHelper(NodoBTree<Dp>* pNodo, Dp pDato) {
     ///verifica si existe el hijo dentro del nodo
-    int i=0;bool flag;
+    int i=0;bool flag=false;
     for(; i<pNodo->_NOfDatas; i++)
         if(memcmp(&pDato, &pNodo->_datas[i],sizeof(Dp))==CERO){
+            cout<<"find it"<<endl;
             flag=true;
             break;
         }

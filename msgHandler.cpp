@@ -48,12 +48,8 @@ void* msgHandler::mainLoop(void* pData) {
         //obtenemos el id procedente del mensaje
         data=_JsonDocument[ID];
         if(op==WRITE){
-            //bloque para econtrar repetidos
-            /*if(_DataBaseTable->Search(data.GetInt())){}
-            else{
-                string datoTemp=AtributosClientes._dato;
-                write(datoTemp.c_str());
-            }*/
+            string datoTemp=AtributosClientes._dato;
+            write(datoTemp.c_str());
         }
         //bloque de lectura
         else if(op==READ){
@@ -67,6 +63,7 @@ void* msgHandler::mainLoop(void* pData) {
 }
 
 void msgHandler::read(const char* msg, int sockfd) {
+    srand(time(NULL));
     
 }
 

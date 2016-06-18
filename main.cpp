@@ -140,9 +140,9 @@ int main(int argc, char** argv) {
     if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
       continue;    /* skip self and parent 
     printf("%s/%s\n", dir, dp->d_name);
-    }
-    closedir(fd);*/
-    ArbolBS<int>* arbol= new ArbolBS<int>(3);
+    }*/
+    //closedir(fd);
+    /*ArbolBS<int>* arbol= new ArbolBS<int>(3);
     arbol->insertData(13);
     arbol->insertData(10);
     arbol->insertData(11);
@@ -169,9 +169,26 @@ int main(int argc, char** argv) {
     arbol->insertData(71);
     arbol->insertData(46);
     arbol->printTree();
-    cout<<"--"<<endl;
-    /*
-    */
-    //msgHandler * nuevo = new msgHandler(5000,"127.0.0.1","TuGfa.dat");
+    cout<<"-fin de las inserciones-"<<endl;
+    if(arbol->findData(35))
+        cout<<"true"<<endl;
+    else
+        cout<<"false"<<endl;
+    /*ArbolBS<char*>* arbol= new ArbolBS<char*>(3);
+    char* dir="/home/ellioth/NetBeansProjets2/FileWarehouse++\0";
+    struct dirent *dp;
+    DIR *fd;
+    if ((fd = opendir(dir)) == NULL) {
+      fprintf(stderr, "listdir: can't open %s\n", dir);
+      return 0;
+    }
+    while ((dp = readdir(fd)) != NULL) {
+    if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
+      continue;    /* skip self and parent
+    printf("%s/%s\n", dir, dp->d_name);
+    }
+    closedir(fd);*/
+    msgHandler * nuevo = new msgHandler(5000,"127.0.0.1","FileWarehouse++\0");
+    
     return 0;
 }
